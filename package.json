@@ -1,0 +1,28 @@
+{
+  "name": "martino-bot",
+  "version": "0.1.0",
+  "description": "Il bot di cui tutti sentivamo il bisogno, un emulatore di Martino",
+  "main": "martino.js",
+  "scripts": {
+    "start": "node martino.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/TrinTragula/martino-bot.git"
+  },
+  "keywords": [
+    "martino",
+    "bot",
+    "telegram"
+  ],
+  "author": "TrinTragula",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/TrinTragula/martino-bot/issues"
+  },
+  "homepage": "https://gitlab.com/TrinTragula/martino-bot#README",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.30.0"
+  }
+}
