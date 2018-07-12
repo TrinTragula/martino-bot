@@ -23,6 +23,7 @@
   },
   "homepage": "https://gitlab.com/TrinTragula/martino-bot#README",
   "dependencies": {
+    "dotenv": "^6.0.0",
     "node-telegram-bot-api": "^0.30.0"
   }
 }
