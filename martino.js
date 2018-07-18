@@ -24,11 +24,11 @@ var commands = {
         const chatId = msg.chat.id;
         if (argument && argument.length > 0) {
             const oggetto = argument.join(" ");
-            var msg = `${oggetto}, non devi rompere il cazzo porco zio`;
-            bot.sendMessage(chatId, msg);
+            var messaggio = `${oggetto}, non devi rompere il cazzo porco zio`;
+            bot.sendMessage(chatId, messaggio);
         } else {
-            var msg = `Ma quanto te pare de esse divertente porco zio`;
-            bot.sendMessage(chatId, msg);
+            var messaggio = `Ma quanto te pare de esse divertente porco zio`;
+            bot.sendMessage(chatId, messaggio);
         }
     },
     "citazione": (msg, command, argument) => {
@@ -42,21 +42,21 @@ var commands = {
     }
 };
 
-bot.onText(/\/(.+)/, (msg, match) => {
-    const command = match[1];
+function executeCommand(msg, command) {
     let splitted = command.split(' ');
     if (splitted && splitted.length > 0 && commands[splitted[0]]) {
         const command = splitted.shift();
         commands[command](msg, command, splitted);
     }
+}
+
+bot.onText(/\/(.+)/, (msg, match) => {
+    const command = match[1];
+    executeCommand(msg, command);
 });
 bot.onText(/\/(.+)\@martinobetabot/, (msg, match) => {
     const command = match[1];
-    let splitted = command.split(' ');
-    if (splitted && splitted.length > 0 && commands[splitted[0]]) {
-        const command = splitted.shift();
-        commands[command](msg, command, splitted);
-    }
+    executeCommand(msg, command);
 });
 
 /*
