@@ -99,7 +99,8 @@ bot.on('inline_query', (msg) => {
     const query = msg.query;
     let result = [];
     if (query && query != "") {
-
+        let cit = Util.citazioneRandom(query);
+        result.push(Util.createInlineTextResponse(cit));
     } else {
         for (let i = 0; i <= 3; i++) {
             let cit = Util.citazioneRandom();
