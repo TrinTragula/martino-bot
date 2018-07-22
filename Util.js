@@ -7,7 +7,7 @@ const Util = {
     },
     citazioneRandom: (query) => {
         let fileCits = fs.readFileSync('citazioni.txt', 'utf8');
-        let cits = fileCits.toString().split("\n");
+        let cits = fileCits.toString().split("\r\n");
         if (query) {
             cits = cits.filter(x => x.includes(query));
         }
@@ -17,7 +17,7 @@ const Util = {
         let fileCits = fs.readFileSync('citazioni.txt', 'utf8');
         let cits = fileCits.toString().split("\r\n");
         if (cits.indexOf(testo) == -1) {
-            fs.appendFileSync('citazioni.txt', testo);
+            fs.appendFileSync('citazioni.txt', "\r\n" + testo);
             return "Aggiunta"
         }
         return "Doppione";
