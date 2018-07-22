@@ -54,7 +54,7 @@ bot.onText(/\/(.+)/, (msg, match) => {
     const command = match[1];
     executeCommand(msg, command);
 });
-bot.onText(/\/(.+)\@martinobetabot/, (msg, match) => {
+bot.onText(/\/(.+)\@martinosilvettibot/, (msg, match) => {
     const command = match[1];
     executeCommand(msg, command);
 });
