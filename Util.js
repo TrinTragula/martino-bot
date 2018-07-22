@@ -6,7 +6,7 @@ const Util = {
         bot.setChatPhoto(chatId, 'img/martino.jpg');
     },
     citazioneRandom: (query) => {
-        let cits = fs.readFileSync("citazioni.text").split(",");
+        let cits = fs.readFileSync("citazioni.txt").split(",");
         if (query) {
             cits = cits.filter(x => x.includes(query));
         }
