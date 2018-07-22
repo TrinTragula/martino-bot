@@ -2,7 +2,15 @@ require('dotenv').load();
 const TelegramBot = require('node-telegram-bot-api');
 const Util = require('./Util');
 const token = process.env.TOKEN;
-const bot = new TelegramBot(token, { polling: true });
+const options = {
+    webHook: {
+        port: process.env.PORT
+    }
+};
+
+const url = process.env.APP_URL;
+const bot = new TelegramBot(TOKEN, options);
+bot.setWebHook(`${url}/bot${TOKEN}/${TOKEN}`);
 
 /*
     Handle commands
