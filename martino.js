@@ -22,7 +22,7 @@ var commands = {
     },
     "help": (msg, command, argument) => {
         const chatId = msg.chat.id;
-        bot.sendMessage(chatId, "Ecco i miei appunti:\n\n/start\nBella regà\n\n/help\nQuesto messaggio\n\n/porcozio [nome facoltativo]\nNon fatemi arrabbiare\n\n/citazione [ricerca facoltativa]\nSaggezza dispensata a caso\nRispondo anche inline! (non offenderti Martino pls)", {
+        bot.sendMessage(chatId, "Ecco i miei appunti:\n\n/start\nBella regà\n\n/help\nQuesto messaggio\n\n/porcozio [nome facoltativo]\nNon fatemi arrabbiare\n\n/citazione [ricerca facoltativa]\nSaggezza dispensata a caso\n\nRispondo anche inline! (non offenderti Martino pls)\nCodice: https://github.com/TrinTragula/martino-bot", {
             "reply_markup": {
                 "keyboard": [Object.keys(commands).map(x => "/" + x)]
             }
