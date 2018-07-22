@@ -47,6 +47,15 @@ var commands = {
         } else {
             bot.sendMessage(chatId, Util.citazioneRandom());
         }
+    },
+    "aggiungi": (msg, command, argument) => {
+        const chatId = msg.chat.id;
+        if (argument && argument.length > 0) {
+            let result = Util.creaCitazione(argument.join(" "));
+            bot.sendMessage(chatId, result);
+        } else {
+            bot.sendMessage(chatId, "ERRORE ERRORE ERRORE");
+        }
     }
 };
 
@@ -107,7 +116,7 @@ bot.on('inline_query', (msg) => {
             result.push(Util.createInlineTextResponse(cit));
         }
     }
-    bot.answerInlineQuery(id, result, {
+    bot.answerInlineQuery(id, result && result.length > 0 ? result : ["Di cosa stai parlando?"], {
         cache_time: 0
     });
 });

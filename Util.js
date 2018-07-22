@@ -6,12 +6,21 @@ const Util = {
         bot.setChatPhoto(chatId, 'img/martino.jpg');
     },
     citazioneRandom: (query) => {
-        let fileCits = fs.readFileSync("citazioni.txt", 'utf8');
-        let cits = fileCits.toString().split("\r\n");
+        let fileCits = fs.readFileSync('citazioni.txt', 'utf8');
+        let cits = fileCits.toString().split("\n");
         if (query) {
             cits = cits.filter(x => x.includes(query));
         }
         return cits[Math.floor(Math.random() * cits.length)];
+    },
+    creaCitazione: (testo) => {
+        let fileCits = fs.readFileSync('citazioni.txt', 'utf8');
+        let cits = fileCits.toString().split("\r\n");
+        if (cits.indexOf(testo) == -1) {
+            fs.appendFileSync('citazioni.txt', testo);
+            return "Aggiunta"
+        }
+        return "Doppione";
     },
     createInlineTextResponse: (text) => {
         return {
