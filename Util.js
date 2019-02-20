@@ -6,21 +6,11 @@ const Util = {
         bot.setChatPhoto(chatId, 'img/martino.jpg');
     },
     citazioneRandom: (query) => {
-        let fileCits = fs.readFileSync('citazioni.txt', 'utf8');
-        let cits = fileCits.toString().split("\n");
+        let cits = Util.getCitazioni()
         if (query) {
             cits = cits.filter(x => x.includes(query));
         }
         return cits[Math.floor(Math.random() * cits.length)];
-    },
-    creaCitazione: (testo) => {
-        let fileCits = fs.readFileSync('citazioni.txt', 'utf8');
-        let cits = fileCits.toString().split("\n");
-        if (cits.indexOf(testo) == -1) {
-            fs.appendFileSync('citazioni.txt', "\n" + testo);
-            return "Aggiunta"
-        }
-        return "Doppione";
     },
     createInlineTextResponse: (text) => {
         return {
@@ -32,6 +22,11 @@ const Util = {
             },
             description: text.length > 50 ? (text.slice(0, 50) + "...") : text
         }
+    },
+    getCitazioni: () => {
+        let fileCits = fs.readFileSync('citazioni.json', 'utf8');
+        let cits = JSON.parse(fileCits)["citazioni"];
+        return cits;
     }
 };
 

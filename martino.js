@@ -47,15 +47,6 @@ var commands = {
         } else {
             bot.sendMessage(chatId, Util.citazioneRandom());
         }
-    },
-    "aggiungi": (msg, command, argument) => {
-        const chatId = msg.chat.id;
-        if (argument && argument.length > 0) {
-            let result = Util.creaCitazione(argument.join(" "));
-            bot.sendMessage(chatId, result);
-        } else {
-            bot.sendMessage(chatId, "ERRORE ERRORE ERRORE");
-        }
     }
 };
 
@@ -91,6 +82,10 @@ var keywords = {
     "matricola": (msg) => {
         const chatId = msg.chat.id;
         bot.sendPhoto(chatId, 'img/martino.jpg');
+    },
+    "scappi?": (msg) => {
+        const chatId = msg.chat.id;
+        bot.sendMessage(chatId, "Non rompe i coglioni, c'ho da fare!");
     }
 }
 
