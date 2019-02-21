@@ -1,6 +1,7 @@
 require('dotenv').load();
 const TelegramBot = require('node-telegram-bot-api');
 const Util = require('./Util');
+var mongo = require('./mongo');
 const TOKEN = process.env.TOKEN;
 const options = {
     webHook: {
@@ -56,6 +57,11 @@ function executeCommand(msg, command) {
         const command = splitted.shift();
         commands[command](msg, command, splitted);
     }
+    mongo.insert({
+        date: new Date(),
+        msg: msg,
+        command: command
+    });
 }
 
 bot.onText(/\/(.+)/, (msg, match) => {
@@ -139,3 +145,22 @@ bot.on('new_chat_photo', (msg) => {
 bot.on('delete_chat_photo', (msg) => {
     Util.setMartinoProfilePic(bot, msg);
 });
+
+
+const checkIfIsGiovedi = () => {
+    const date = new Date();
+    if (date.getDay() == 4 && date.getHours() == 20 && date.getMinutes() == 0) {
+        mongo.connectToServer(function (err) {
+            const db = mongo.getDb();
+            db.db().collection('comandi')
+                .distinct("msg.chat.id", {}, function (err, chats) {
+                    for (const chat of chats) {
+                        bot.sendMessage(chat, `Ragà, scappate stasera?`);
+                    }
+                });
+            db.close();
+        });
+    }
+}
+
+setInterval(checkIfIsGiovedi, 55 * 1000);
