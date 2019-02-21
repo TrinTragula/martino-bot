@@ -74,7 +74,7 @@ var commands = {
                             let counter = 0;
                             stats = stats.map(x => {
                                 counter++;
-                                return `*${counter}° classificato:*\n${x._id.name}${x._id.username ? "(@" + x._id.username + ")": ""}\n_${x.count} messaggi_\n`
+                                return `*${counter}° classificato:*\n${x._id.name}${x._id.username ? " (@" + x._id.username + ")": ""}\n_${x.count} messaggi_\n`
                             });
 
                             let msg = "Classifica utilizzo del bot:\n\n"
