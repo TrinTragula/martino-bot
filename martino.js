@@ -48,7 +48,45 @@ var commands = {
         } else {
             bot.sendMessage(chatId, Util.citazioneRandom());
         }
-    }
+    },
+    "stats": (msg, command, argument) => {
+        const chatId = msg.chat.id;
+        mongo.connectToServer(function (err) {
+            const db = mongo.getDb();
+            db.db().collection('comandi').aggregate([{
+                    $group: {
+                        _id: {
+                            name: "$msg.from.first_name",
+                            username: "$msg.from.username",
+                        },
+                        count: {
+                            $sum: 1
+                        }
+                    },
+                }, {
+                    $sort: {
+                        count: -1
+                    }
+                }],
+                function (err, result) {
+                    result.limit(5).toArray()
+                        .then(stats => {
+                            let counter = 0;
+                            stats = stats.map(x => {
+                                counter++;
+                                return `*${counter}° classificato:*\n${x._id.name}${x._id.username ? "(@" + x._id.username + ")": ""}\n_${x.count} messaggi_\n`
+                            });
+
+                            let msg = "Classifica utilizzo del bot:\n\n"
+                            msg += stats.join("\n")
+                            bot.sendMessage(chatId, msg, {
+                                parse_mode: "Markdown"
+                            });
+                        });
+                    db.close();
+                });
+        });
+    },
 };
 
 function executeCommand(msg, command) {
