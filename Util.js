@@ -27,6 +27,11 @@ const Util = {
         let fileCits = fs.readFileSync('citazioni.json', 'utf8');
         let cits = JSON.parse(fileCits)["citazioni"];
         return cits;
+    },
+    immagineRandom: () => {
+        const images = fs.readdirSync('img');
+        const image = images[Math.floor(Math.random() * images.length)];
+        return "img/" + image;
     }
 };
 

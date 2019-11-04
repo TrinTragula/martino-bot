@@ -1,6 +1,6 @@
 {
   "name": "martino-bot",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Il bot di cui tutti sentivamo il bisogno, un emulatore di Martino",
   "main": "martino.js",
   "scripts": {

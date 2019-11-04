@@ -1,7 +1,7 @@
 require('dotenv').load();
 const TelegramBot = require('node-telegram-bot-api');
 const Util = require('./Util');
-var mongo = require('./mongo');
+const mongo = require('./mongo');
 const TOKEN = process.env.TOKEN;
 const options = {
     webHook: {
@@ -13,6 +13,28 @@ const url = process.env.APP_URL;
 const bot = new TelegramBot(TOKEN, options);
 bot.setWebHook(`${url}/bot${TOKEN}/${TOKEN}`);
 
+const VERSIONE = "0.1.1";
+
+const sendToEverybody = (msg) => {
+    mongo.connectToServer(function (err) {
+        const db = mongo.getDb();
+        db.db().collection('comandi').distinct("msg.chat.id", {}, (err, chatIds) => {
+            if (chatIds) {
+                for (const chatId of chatIds) {
+                    bot.sendMessage(chatId, msg);
+                }
+            }
+        });
+    });
+}
+
+// Invio eventuali annunci
+mongo.getAnnouncement(VERSIONE, (annuncio) => {
+    if (annuncio && annuncio.messaggio) {
+        sendToEverybody(annuncio.messaggio);
+    }
+});
+
 /*
     Handle commands
 */
@@ -20,13 +42,29 @@ var commands = {
     "start": (msg, command, argument) => {
         const chatId = msg.chat.id;
         bot.sendMessage(chatId, "Bella regà");
+        if (!msg.chat.type == "private") Util.setMartinoProfilePic(bot, msg);
     },
     "help": (msg, command, argument) => {
         const chatId = msg.chat.id;
-        bot.sendMessage(chatId, "Ecco i miei appunti:\n\n/start\nBella regà\n\n/help\nQuesto messaggio\n\n/porcozio [nome facoltativo]\nNon fatemi arrabbiare\n\n/citazione [ricerca facoltativa]\nSaggezza dispensata a caso\n\nRispondo anche inline! (non offenderti Martino pls)\nCodice: https://github.com/TrinTragula/martino-bot", {
-            "reply_markup": {
-                "keyboard": [Object.keys(commands).map(x => "/" + x)]
-            }
+        let message = "Ecco i miei appunti:\n\n";
+        message += "/start\n";
+        message += "Bella regà\n\n";
+        message += "/help\n";
+        message += "Questo messaggio\n\n";
+        message += "/porcozio [nome facoltativo]\n";
+        message += "Non fatemi arrabbiare\n\n";
+        message += "/citazione [ricerca facoltativa]\n";
+        message += "Saggezza dispensata a caso\n\n";
+        message += "/immagine\n";
+        message += "Rifatti gli occhi\n\n";
+        message += "Rispondo anche inline!\n(non offenderti Martino pls)\n\n";
+
+        message += "E come disse Martino: \n"
+        message += "```\nIo ho già raggiunto l\'immortalità salvando la mia coscienza nel martino bot. Finché ci sarà internet io vivrò.\n```\n\n"
+        message += "Codice:\nhttps://github.com/TrinTragula/martino-bot";
+
+        bot.sendMessage(chatId, message, {
+            parse_mode: "Markdown"
         });
     },
     "porcozio": (msg, command, argument) => {
@@ -49,32 +87,36 @@ var commands = {
             bot.sendMessage(chatId, Util.citazioneRandom());
         }
     },
+    "immagine": (msg) => {
+        const chatId = msg.chat.id;
+        bot.sendPhoto(chatId, Util.immagineRandom());
+    },
     "stats": (msg, command, argument) => {
         const chatId = msg.chat.id;
         mongo.connectToServer(function (err) {
             const db = mongo.getDb();
             db.db().collection('comandi').aggregate([{
-                    $group: {
-                        _id: {
-                            name: "$msg.from.first_name",
-                            username: "$msg.from.username",
-                        },
-                        count: {
-                            $sum: 1
-                        }
+                $group: {
+                    _id: {
+                        name: "$msg.from.first_name",
+                        username: "$msg.from.username",
                     },
-                }, {
-                    $sort: {
-                        count: -1
+                    count: {
+                        $sum: 1
                     }
-                }],
+                },
+            }, {
+                $sort: {
+                    count: -1
+                }
+            }],
                 function (err, result) {
                     result.limit(5).toArray()
                         .then(stats => {
                             let counter = 0;
                             stats = stats.map(x => {
                                 counter++;
-                                return `*${counter}° classificato:*\n${x._id.name}${x._id.username ? " (@" + x._id.username + ")": ""}\n_${x.count} messaggi_\n`
+                                return `*${counter}° classificato:*\n${x._id.name}${x._id.username ? " (@" + x._id.username + ")" : ""}\n_${x.count} messaggi_\n`
                             });
 
                             let msg = "Classifica utilizzo del bot:\n\n"
@@ -130,6 +172,38 @@ var keywords = {
     "scappi?": (msg) => {
         const chatId = msg.chat.id;
         bot.sendMessage(chatId, "Non rompe i coglioni, c'ho da fare!");
+    },
+    "esn": (msg) => {
+        const chatId = msg.chat.id;
+        bot.sendMessage(chatId, "Entrate in ESN perdenti #staylemon");
+    },
+    "preservativo": (msg) => {
+        const chatId = msg.chat.id;
+        bot.sendVoice(chatId, "audio/suoni_bizzarri.mp3");
+    },
+    "preservativi": (msg) => {
+        const chatId = msg.chat.id;
+        bot.sendVoice(chatId, "audio/suoni_bizzarri.mp3");
+    },
+    "pasta": (msg) => {
+        const chatId = msg.chat.id;
+        bot.sendVoice(chatId, "audio/pasta.mp3");
+    },
+    "spaghetti": (msg) => {
+        const chatId = msg.chat.id;
+        bot.sendVoice(chatId, "audio/pasta.mp3");
+    },
+    "gigi": (msg) => {
+        const chatId = msg.chat.id;
+        bot.sendVoice(chatId, "audio/gigidag.mp3");
+    },
+    "agostino": (msg) => {
+        const chatId = msg.chat.id;
+        bot.sendVoice(chatId, "audio/gigidag.mp3");
+    },
+    "toujour": (msg) => {
+        const chatId = msg.chat.id;
+        bot.sendVoice(chatId, "audio/gigidag.mp3");
     }
 }
 
@@ -177,27 +251,14 @@ bot.on('left_chat_member', (msg) => {
     bot.sendMessage(chatId, `Poraccio.`);
 });
 
-bot.on('new_chat_photo', (msg) => {
-    Util.setMartinoProfilePic(bot, msg);
-});
-bot.on('delete_chat_photo', (msg) => {
-    Util.setMartinoProfilePic(bot, msg);
-});
-
-
+let alreadySent = false;
 const checkIfIsGiovedi = () => {
     const date = new Date();
-    if (date.getDay() == 4 && date.getHours() == 20 && date.getMinutes() == 0) {
-        mongo.connectToServer(function (err) {
-            const db = mongo.getDb();
-            db.db().collection('comandi')
-                .distinct("msg.chat.id", {}, function (err, chats) {
-                    for (const chat of chats) {
-                        bot.sendMessage(chat, `Ragà, scappate stasera?`);
-                    }
-                });
-            db.close();
-        });
+    if (date.getDay() == 4 && date.getHours() == 20 && date.getMinutes() == 0 && !alreadySent) {
+        sendToEverybody("Ragà, scappate stasera?");
+        alreadySent = true;
+    } else {
+        alreadySent = false;
     }
 }
 
