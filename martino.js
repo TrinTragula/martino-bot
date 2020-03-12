@@ -254,8 +254,8 @@ bot.on('left_chat_member', (msg) => {
 let alreadySent = false;
 const checkIfIsGiovedi = () => {
     const date = new Date();
-    if (date.getDay() == 4 && date.getHours() == 20 && date.getMinutes() == 0 && !alreadySent) {
-        sendToEverybody("Ragà, scappate stasera?");
+    if (date.getHours() == 20 && date.getMinutes() == 0 && !alreadySent) {
+        sendToEverybody("Ragà, non scappate stasera, me raccomando");
         alreadySent = true;
     } else {
         alreadySent = false;
