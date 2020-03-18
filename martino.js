@@ -15,13 +15,20 @@ bot.setWebHook(`${url}/bot${TOKEN}/${TOKEN}`);
 
 const VERSIONE = "0.1.1";
 
-const sendToEverybody = (msg) => {
+const sendToEverybody = (msg, pic) => {
+    pic = pic || null;
     mongo.connectToServer(function (err) {
         const db = mongo.getDb();
         db.db().collection('comandi').distinct("msg.chat.id", {}, (err, chatIds) => {
             if (chatIds) {
                 for (const chatId of chatIds) {
-                    bot.sendMessage(chatId, msg);
+                    if (pic) {
+                        bot.sendPhoto(chatId, pic, {
+                            caption: msg
+                        });
+                    } else {
+                        bot.sendMessage(chatId, msg);
+                    }
                 }
             }
         });
@@ -204,6 +211,10 @@ var keywords = {
     "toujour": (msg) => {
         const chatId = msg.chat.id;
         bot.sendVoice(chatId, "audio/gigidag.mp3");
+    },
+    "internet": (msg) => {
+        const chatId = msg.chat.id;
+        bot.sendVoice(chatId, "audio/internet.mp3");
     }
 }
 
@@ -255,7 +266,7 @@ let alreadySent = false;
 const checkIfIsGiovedi = () => {
     const date = new Date();
     if (date.getHours() == 20 && date.getMinutes() == 0 && !alreadySent) {
-        sendToEverybody("Ragà, non scappate stasera, me raccomando");
+        sendToEverybody("Ragà, non scappate stasera, me raccomando", "img/martino-quarantena.jpg");
         alreadySent = true;
     } else {
         alreadySent = false;
