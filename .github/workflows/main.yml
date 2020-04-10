@@ -25,4 +25,4 @@ jobs:
       with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           dokku-host: 'scarinci.dev'
-          app-name: 'mmartino-bot'
+          app-name: 'martino-bot'
