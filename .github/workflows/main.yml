@@ -1,21 +1,27 @@
-name: CD (Dokku)
+name: Deploy to Dokku - production
 
 on:
   push:
     branches:
       - master
 
+env:
+  DOKKU_HOST: 'scarinci.dev'
+  DOKKU_APP_NAME: 'martino-bot'
+  DOKKU_REMOTE_BRANCH: 'master'
+
 jobs:
-  build:
-
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v1
-    - name: Dokku deploy
-      uses: vitalyliber/dokku-github-action@v3.0
-      env:
-        PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-        PUBLIC_KEY: ${{ secrets.PUBLIC_KEY }}
-        HOST: scarinci.dev
-        PROJECT: martino-bot
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Deploy
+        uses: woudsma/dokku-deploy-github-action@v1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          dokku-host: ${{ env.DOKKU_HOST }}
+          app-name: ${{ env.DOKKU_APP_NAME }}
+          app-remote-branch: ${{ env.DOKKU_REMOTE_BRANCH }}
