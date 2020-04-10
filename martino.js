@@ -1,4 +1,4 @@
- require('dotenv').load();
+require('dotenv').load();
 const TelegramBot = require('node-telegram-bot-api');
 const Util = require('./Util');
 const mongo = require('./mongo');
