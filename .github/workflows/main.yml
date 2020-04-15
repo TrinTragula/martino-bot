@@ -6,7 +6,7 @@ on:
       - master
 
 env:
-  DOKKU_HOST: 'scarinci.dev'
+  DOKKU_HOST: 'danielescarinci.com'
   DOKKU_APP_NAME: 'martino-bot'
   DOKKU_REMOTE_BRANCH: 'master'
 
