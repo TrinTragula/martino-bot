@@ -215,6 +215,14 @@ var keywords = {
     "internet": (msg) => {
         const chatId = msg.chat.id;
         bot.sendVoice(chatId, "audio/internet.mp3");
+    },
+    "carta": (msg) => {
+        const chatId = msg.chat.id;
+        bot.sendDocument(chatId, "gif/martino-carta.gif");
+    },
+    "le bizzarre avventure di martino": (msg) => {
+        const chatId = msg.chat.id;
+        bot.sendMessage(chatId, "https://www.youtube.com/watch?v=PlJe04ZItII", { disable_web_page_preview: false });
     }
 }
 
@@ -266,7 +274,7 @@ let alreadySent = false;
 const checkIfIsGiovedi = () => {
     const date = new Date();
     if (date.getDay() == 4 && date.getHours() == 20 && date.getMinutes() == 0 && !alreadySent) {
-        sendToEverybody("Ragà, non scappate stasera, me raccomando", "img/martino-quarantena.jpg");
+        sendToEverybody("Ragà, scappate? Daje", "img/img (23).jpg");
         alreadySent = true;
     } else {
         alreadySent = false;
