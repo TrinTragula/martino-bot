@@ -274,7 +274,7 @@ let alreadySent = false;
 const checkIfIsGiovedi = () => {
     const date = new Date();
     if (date.getDay() == 4 && date.getHours() == 20 && date.getMinutes() == 0 && !alreadySent) {
-        sendToEverybody("Ragà, scappate? Daje", "img/img (23).jpg");
+        sendToEverybody("🇫🇷 Les gars, fuyez? Allez! 🇫🇷", "img/martene.jpg");
         alreadySent = true;
     } else {
         alreadySent = false;
